@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//Commands to run the DB
+//# Publish the Model changes: 
+//npx prisma db push
+
+//# opens GUI for DB Models
+//npx prisma studio
+
+//# Create a history of changes in a SQL script
+//npx prisma migrate dev --name <name of the SQL script> 
+
+//# Apply pending migrations to production DB
+//npx prisma migrate deploy
+//TODO: include command on CI/CD;
+
+model User {
+  id Int @id @default(autoincrement())
+  firstName String
+  lastName String
+  email String @unique
+  phone String?
+  role Role @default(User)
+  posts Post[]
+  uid String @unique
+}
+
+model Admin {
+  id Int @id @default(autoincrement())
+  firstName String?
+  lastName String?
+  email String @unique
+  phone String?
+  uid String @unique
+}
+
+model Event {
+  id Int @id @default(autoincrement())
+  title String
+  description String?
+  dressCode String?
+  startTime DateTime
+  endTime DateTime
+  venueId Int
+  venue Venue @relation(fields: [venueId], references: [id])
+}
+
+model Venue {
+  id Int @id @default(autoincrement())
+  title String
+  address String
+  city String
+  province String //TODO: create a Province Table for consistence
+  country String //TODO: create a Country Table for consistence
+  postalCode String
+  events Event[]
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(255)
+  published Boolean @default(false)
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt //when we update the post it saves the date
+  author User? @relation(fields: [authorId], references: [id])
+  authorId Int?
+}
+
+enum Role {
+  User
+  Admin
+}
