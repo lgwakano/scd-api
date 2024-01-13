@@ -14,7 +14,8 @@
     "dev-start": "npm run docker:run:postgres && node dist/src/index.js",
     "docker:run:postgres": "start-db.sh",
     "seed": "ts-node prisma/seed.ts",
-    "build": "prisma generate && tsc"
+    "build": "prisma generate && tsc",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
