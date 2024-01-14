@@ -1,27 +1,20 @@
 import "dotenv/config";
 import express from 'express';
+import cors from 'cors';
 import { eventRoutes } from "./routes/eventRoutes";
 import { venueRoutes } from "./routes/venueRoutes";
 import { postRoutes } from "./routes/postRoutes";
 
 const app = express();
+const corsOptions = require('cors');
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'https://melodic-profiterole-63a18b.netlify.app');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-});
+// Allow requests from specific origins
+app.use(corsOptions({
+    origin: 'https://melodic-profiterole-63a18b.netlify.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+}));
 
-app.options('/*', (req, res) => {
-    res.header('Access-Control-Allow-Origin', 'https://melodic-profiterole-63a18b.netlify.app');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.status(200).send();
-});
-
-  
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
