@@ -10,7 +10,7 @@ const corsOptions = require('cors');
 
 // Allow requests from specific origins
 app.use(corsOptions({
-    origin: 'https://melodic-profiterole-63a18b.netlify.app',
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 }));
