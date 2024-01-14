@@ -3,18 +3,13 @@
   "builds": [
     {
       "src": "src/index.ts",
-      "use": "@vercel/node",
-      "config": { "maxLambdaSize": "25mb" }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/index.ts",
-      "methods": ["GET", "POST"],
-      "headers": {
-        "Access-Control-Allow-Origin": "*"
-      }
+      "dest": "src/index.ts"
     }
   ]
 }
