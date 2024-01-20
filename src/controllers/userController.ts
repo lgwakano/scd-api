@@ -93,13 +93,26 @@ const getAllUsers = async (
     next: NextFunction
   ): Promise<void> => {
     const { id } = req.params;
-  
+
     try {
+      const existingUser = await prisma.user.findUnique({
+        where: {
+          id: Number(id),
+        },
+      });
+      if (!existingUser) {
+        res.status(404).json({ error: "User not found"});
+        return;
+      }
+      
       const updatedUser = await prisma.user.update({
         where: {
           id: Number(id),
         },
-        data: req.body,
+        data: {
+          ...existingUser,
+          ...req.body,
+        }
       });
   
       res.json(updatedUser);
