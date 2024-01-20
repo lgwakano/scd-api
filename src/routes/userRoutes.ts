@@ -16,4 +16,4 @@ router.post("/", createUser);
 router.put("/:id", updateUser);
 router.delete("/:id", deleteUser);
 
-export { router as eventRoutes };
+export { router as userRoutes };

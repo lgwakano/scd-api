@@ -4,6 +4,7 @@ import cors from 'cors';
 import { eventRoutes } from "./routes/eventRoutes";
 import { venueRoutes } from "./routes/venueRoutes";
 import { postRoutes } from "./routes/postRoutes";
+import { userRoutes } from "./routes/userRoutes";
 
 const app = express();
 const corsOptions = require('cors');
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/events', eventRoutes);
 app.use('/venues', venueRoutes);
 app.use('/posts', postRoutes);
+app.use('/user', userRoutes);
 
 
 app.listen(3001, () => {
