@@ -31,6 +31,7 @@ model User {
   firstName String
   lastName String
   email String @unique
+  password String
   phone String?
   role Role @default(User)
   posts Post[]

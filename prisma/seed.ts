@@ -93,7 +93,8 @@ const venueSeedData = [
             firstName: "Luiz",
             lastName: "Wakano",
             email: "user@example.com",
-            uid: "asakjk24j2kj2k4"
+            uid: "asakjk24j2kj2k4",
+            password: "hash"
         },
     });
     
