@@ -1,5 +1,64 @@
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../prisma/prisma';
+import passport from 'passport';
+
+//Passport local use
+export async function authenticate(username: string, password: string, done: any) {
+  try {
+    console.log("authenticate! ", username, password);
+
+    const user = await prisma.user.findFirst({
+      where: {
+        email: username,
+      },
+    });
+
+    if (!user) {
+      return done(null, false, { message: "Incorrect username" });
+    }
+    if (user.password !== password) {
+      return done(null, false, { message: "Incorrect password" });
+    }
+    return done(null, user);
+  } catch (error) {
+    return done(error);
+  }
+};
+
+const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    passport.authenticate('local', (err: any, user: any, info: any) => {
+      console.log('start login');
+
+      if (err) { return next(err); }
+      if (!user) { return res.status(401).json({ message: info.message }); }
+      
+      console.log('login OK!', user);
+      
+      // Custom logic for successful authentication
+      res.json({ message: "Login successful", user });
+    })(req, res, next);
+    
+  } catch (error) {
+    // Log the error for debugging purposes
+    console.error('Error in Login:', error);
+
+    // Handle specific error types
+    if (error instanceof Error) {
+      next(error.message);
+    } else {
+      // Handle unknown errors in a generic way
+      next('Unknown error occurred');
+    }
+  }
+};
+
+
+
 
 // Use Promise<void> to indicate that the function doesn't return a value.
 const getAllUsers = async (
@@ -159,5 +218,5 @@ const getAllUsers = async (
     }
   };
   
-  export { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+  export { getAllUsers, getUserById, createUser, updateUser, deleteUser, login };
   
