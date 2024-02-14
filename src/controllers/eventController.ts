@@ -95,11 +95,14 @@ const getAllEvents = async (
     const { id } = req.params;
   
     try {
+    // Exclude 'id', 'start', and 'end' from req.body
+    const { id: eventId, start, end, ...updateData } = req.body;
+
       const updatedEvent = await prisma.event.update({
         where: {
           id: Number(id),
         },
-        data: req.body,
+        data: updateData,
       });
   
       res.json(updatedEvent);
